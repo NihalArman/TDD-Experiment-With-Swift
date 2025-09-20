@@ -5,6 +5,7 @@
 //  Created by Arman Nihal on 20.9.2025.
 //
 protocol HomePresenterProtocol: AnyObject {
+    func buttonPressed()
 }
 
 class HomePresenter {
@@ -17,4 +18,8 @@ class HomePresenter {
 }
 
 extension HomePresenter: HomePresenterProtocol {
+    func buttonPressed() {
+        view?.updateView(with: "button pressed")
+    }
+    
 }

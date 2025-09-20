@@ -14,19 +14,25 @@ protocol HomeRouterProtocol: AnyObject {
 
 class HomeRouter: HomeRouterProtocol {
     private let navigationController: UINavigationController
+    private let viewControllerType: HomeViewController.Type
 
-    init(navigationController: UINavigationController) {
+    init(
+        navigationController: UINavigationController,
+        viewControllerType: HomeViewController.Type = HomeViewController.self
+    ) {
         self.navigationController = navigationController
+        self.viewControllerType = viewControllerType
     }
 
     func createView() -> UIViewController {
         let interactor = HomeInteractor()
         let presenter = HomePresenter(interactor: interactor)
-        let viewController = HomeViewController(presenter: presenter)
+        let viewController = viewControllerType.init(presenter: presenter)
+        presenter.view = viewController
         return viewController
     }
 
     func load() {
-        navigationController.pushViewController(createView(), animated: true)
+        navigationController.show(createView(), sender: nil)
     }
 }
