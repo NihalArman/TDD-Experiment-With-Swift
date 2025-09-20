@@ -7,6 +7,8 @@
 import UIKit
 
 protocol HomeViewControllerProtocol: AnyObject {
+    func showLoadingSpinner()
+    func stopLoadingSpinner()
     func updateView(with text: String)
 }
 
@@ -56,10 +58,17 @@ class HomeViewController: UIViewController {
         return button
     }()
 
+    private lazy var loadingSpinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView()
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        return spinner
+    }()
+
     private func setupView() {
         view.addSubview(containerView)
         containerView.addSubview(button)
         containerView.addSubview(textView)
+        containerView.addSubview(loadingSpinner)
 
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -74,12 +83,23 @@ class HomeViewController: UIViewController {
 
             button.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             button.centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: 60),
+
+            loadingSpinner.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            loadingSpinner.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
         ])
     }
 
     func updateView(with text: String) {
         textView.text = text
         view.setNeedsDisplay()
+    }
+
+    func showLoadingSpinner() {
+        loadingSpinner.startAnimating()
+    }
+
+    func stopLoadingSpinner() {
+        loadingSpinner.stopAnimating()
     }
 }
 

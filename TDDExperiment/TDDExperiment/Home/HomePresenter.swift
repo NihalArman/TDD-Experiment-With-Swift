@@ -19,7 +19,9 @@ class HomePresenter {
 
 extension HomePresenter: HomePresenterProtocol {
     func buttonPressed() {
+        view?.showLoadingSpinner()
         view?.updateView(with: "button pressed")
+        view?.stopLoadingSpinner()
     }
     
 }

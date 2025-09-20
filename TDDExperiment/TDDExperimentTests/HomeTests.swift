@@ -15,8 +15,12 @@ struct TDDExperimentTests {
 
         sut.pressShowButton()
 
-        #expect(sut.viewMessages.count == 1)
-        #expect(sut.viewMessages == [.updateView("button pressed")])
+        #expect(sut.viewMessages.count == 3)
+        #expect(sut.viewMessages == [
+            .showLoadingSpinner,
+            .updateView("button pressed"),
+            .stopLoadingSpinner
+        ])
     }
 
     // MARK: - Helpers
@@ -38,7 +42,7 @@ struct TDDExperimentTests {
     // MARK: - SUT
     private class SUT: HomeViewController {
         enum Message: Equatable {
-            case updateView(_ text: String)
+            case updateView(_ text: String), showLoadingSpinner, stopLoadingSpinner
         }
         private(set) var viewMessages: [Message] = []
 
@@ -49,6 +53,14 @@ struct TDDExperimentTests {
         // MARK: - HomeViewControllerProtocol
         override func updateView(with text: String) {
             viewMessages.append(.updateView(text))
+        }
+
+        override func showLoadingSpinner() {
+            viewMessages.append(.showLoadingSpinner)
+        }
+
+        override func stopLoadingSpinner() {
+            viewMessages.append(.stopLoadingSpinner)
         }
     }
 
